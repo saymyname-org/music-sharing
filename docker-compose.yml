@@ -1,6 +1,6 @@
 services:
   postgres:
-    container_name: sharing_service_database
+    container_name: sharing-service
     image: postgres:16.4
     environment:
       POSTGRES_USER: ${PG_USER}

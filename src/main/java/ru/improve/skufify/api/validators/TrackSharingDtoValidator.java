@@ -2,11 +2,11 @@ package ru.improve.skufify.api.validators;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import ru.improve.skufify.api.error.MusicSharingException;
+import ru.improve.skufify.api.error.ServiceException;
 
 import static ru.improve.skufify.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
 
-public abstract class MusicSharingDtoValidator {
+public abstract class TrackSharingDtoValidator {
 
     protected void createAndThrowException(Errors errors) {
         if (errors.hasErrors()) {
@@ -21,7 +21,7 @@ public abstract class MusicSharingDtoValidator {
                         .append("; ");
             }
 
-            throw new MusicSharingException(ILLEGAL_DTO_VALUE, null, new String[]{fieldsWithErrors.toString()});
+            throw new ServiceException(ILLEGAL_DTO_VALUE, null, new String[]{fieldsWithErrors.toString()});
         }
     }
 }

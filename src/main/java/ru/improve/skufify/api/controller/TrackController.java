@@ -8,23 +8,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.improve.skufify.api.dto.upload.UploadTrackRequest;
-import ru.improve.skufify.api.validators.MusicValidator;
+import ru.improve.skufify.api.validators.TrackContollerValidator;
 
-import static ru.improve.skufify.api.Paths.MUSIC;
+import static ru.improve.skufify.api.Paths.TRACK;
 import static ru.improve.skufify.api.Paths.UPLOAD;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(MUSIC)
-public class MusicController {
+@RequestMapping(TRACK)
+public class TrackController {
 
-    private final MusicValidator musicValidator;
+    private final TrackContollerValidator trackContollerValidator;
 
     @PostMapping(UPLOAD)
     public void uploadTrack(@RequestBody @Valid UploadTrackRequest uploadTrackRequest,
                             BindingResult bindingResult) {
 
-        musicValidator.validate(uploadTrackRequest, bindingResult);
+        trackContollerValidator.validate(uploadTrackRequest, bindingResult);
 
 
     }

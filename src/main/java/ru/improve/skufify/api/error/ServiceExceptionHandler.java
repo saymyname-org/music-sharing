@@ -31,7 +31,7 @@ import static ru.improve.skufify.util.MessageKeys.TITLE_USER_NOT_FOUND;
 @Log4j2
 @RequiredArgsConstructor
 @RestControllerAdvice
-public class OpenfyExceptionHandler {
+public class ServiceExceptionHandler {
 
     private static EnumMap<ErrorCode, Pair<String, HttpStatus>> ERRORS_MAP;
 
@@ -64,15 +64,15 @@ public class OpenfyExceptionHandler {
 
     private Pair<ErrorCode, String> resolveException(Exception ex) {
         Pair<ErrorCode, String> resolvedException;
-        if (ex instanceof ru.improve.unboundedSound.api.error.OpenfyException) {
-            resolvedException = resolveOpenfyException((ru.improve.unboundedSound.api.error.OpenfyException) ex);
+        if (ex instanceof ServiceException) {
+            resolvedException = resolveOpenfyException((ServiceException) ex);
         } else {
             resolvedException = resolveErrorCode(INTERNAL_SERVER_ERROR);
         }
         return resolvedException;
     }
 
-    private Pair<ErrorCode, String> resolveOpenfyException(ru.improve.unboundedSound.api.error.OpenfyException ex) {
+    private Pair<ErrorCode, String> resolveOpenfyException(ServiceException ex) {
         Pair<String, HttpStatus> errorPair = ERRORS_MAP.get(ex.getCode());
         StringBuilder messageBuild = new StringBuilder(buildMessage(errorPair.getFirst(), ex.getParams()));
         if (ex.getMessage() != null) {
@@ -88,7 +88,7 @@ public class OpenfyExceptionHandler {
                 buildMessage(ERRORS_MAP.get(errorCode).getFirst(), null));
     }
 
-    private String buildMessageFromOpenfyExceptions(ru.improve.unboundedSound.api.error.OpenfyException ex) {
+    private String buildMessageFromOpenfyExceptions(ServiceException ex) {
         int messageCount = 0;
         Throwable causeException = ex.getCause();
         StringBuilder messageBuilder = new StringBuilder();

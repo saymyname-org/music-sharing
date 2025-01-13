@@ -3,7 +3,7 @@ package ru.improve.skufify.api.validators;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public interface MusicValidator extends Validator {
+public interface TrackContollerValidator extends Validator {
 
     boolean supports(Class<?> clazz);
 
