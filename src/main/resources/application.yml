@@ -1,6 +1,8 @@
 spring:
   application:
-    name: skufify
+    name: skufify-sharing-service
+  config:
+    import: optional:file:.env[.properties]
 
   datasource:
     url: jdbc:postgresql://${PG_HOST}:${PG_PORT}/${PG_DATABASE}
@@ -12,14 +14,20 @@ spring:
     show-sql: false
     open-in-view: false
 
-app:
-  token:
-    secret: N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTczNDAxMT0MDExMjM1
-  session:
-    duration: 24h
+grpc:
+  client:
+    myGrpcService:
+      address: localhost:9090
+      negotiation-type: plaintext
+
+#app:
+#  token:
+#    secret: N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTczNDAxMT0MDExMjM1
+#  session:
+#    duration: 24h
 
 server:
-  port: 8080
+  port: 8081
 
 logging:
   level:
