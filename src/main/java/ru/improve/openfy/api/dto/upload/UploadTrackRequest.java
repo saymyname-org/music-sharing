@@ -1,4 +1,4 @@
-package ru.improve.skufify.api.dto.upload;
+package ru.improve.openfy.api.dto.upload;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

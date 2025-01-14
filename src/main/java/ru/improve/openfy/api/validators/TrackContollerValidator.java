@@ -1,4 +1,4 @@
-package ru.improve.skufify.api.validators;
+package ru.improve.openfy.api.validators;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

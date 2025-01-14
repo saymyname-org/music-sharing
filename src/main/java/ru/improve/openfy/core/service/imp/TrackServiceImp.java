@@ -1,9 +1,9 @@
-package ru.improve.skufify.core.service.imp;
+package ru.improve.openfy.core.service.imp;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.improve.skufify.core.service.TrackService;
+import ru.improve.openfy.core.service.TrackService;
 
 @Service
 @RequiredArgsConstructor

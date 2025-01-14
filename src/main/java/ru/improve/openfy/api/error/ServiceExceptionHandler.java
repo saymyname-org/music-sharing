@@ -1,4 +1,4 @@
-package ru.improve.skufify.api.error;
+package ru.improve.openfy.api.error;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.EnumMap;
 import java.util.Map;
 
-import static ru.improve.skufify.api.error.ErrorCode.ALREADY_EXIST;
-import static ru.improve.skufify.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
-import static ru.improve.skufify.api.error.ErrorCode.ILLEGAL_VALUE;
-import static ru.improve.skufify.api.error.ErrorCode.INTERNAL_SERVER_ERROR;
-import static ru.improve.skufify.api.error.ErrorCode.NOT_FOUND;
-import static ru.improve.skufify.api.error.ErrorCode.SESSION_IS_OVER;
-import static ru.improve.skufify.api.error.ErrorCode.UNAUTHORIZED;
-import static ru.improve.skufify.util.MessageKeys.INVALID_AUTHORIZATION;
-import static ru.improve.skufify.util.MessageKeys.SESSION_DISABLE;
-import static ru.improve.skufify.util.MessageKeys.TITLE_ENTITY_ALREADY_EXIST;
-import static ru.improve.skufify.util.MessageKeys.TITLE_ILLEGAL_DTO_VALUE;
-import static ru.improve.skufify.util.MessageKeys.TITLE_ILLEGAL_VALUE;
-import static ru.improve.skufify.util.MessageKeys.TITLE_INTERNAL_SERVER_ERROR;
-import static ru.improve.skufify.util.MessageKeys.TITLE_USER_NOT_FOUND;
+import static ru.improve.openfy.api.error.ErrorCode.ALREADY_EXIST;
+import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
+import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_VALUE;
+import static ru.improve.openfy.api.error.ErrorCode.INTERNAL_SERVER_ERROR;
+import static ru.improve.openfy.api.error.ErrorCode.NOT_FOUND;
+import static ru.improve.openfy.api.error.ErrorCode.SESSION_IS_OVER;
+import static ru.improve.openfy.api.error.ErrorCode.UNAUTHORIZED;
+import static ru.improve.openfy.util.MessageKeys.INVALID_AUTHORIZATION;
+import static ru.improve.openfy.util.MessageKeys.SESSION_DISABLE;
+import static ru.improve.openfy.util.MessageKeys.TITLE_ENTITY_ALREADY_EXIST;
+import static ru.improve.openfy.util.MessageKeys.TITLE_ILLEGAL_DTO_VALUE;
+import static ru.improve.openfy.util.MessageKeys.TITLE_ILLEGAL_VALUE;
+import static ru.improve.openfy.util.MessageKeys.TITLE_INTERNAL_SERVER_ERROR;
+import static ru.improve.openfy.util.MessageKeys.TITLE_USER_NOT_FOUND;
 
 @Log4j2
 @RequiredArgsConstructor

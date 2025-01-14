@@ -446,6 +446,6 @@ gradle-app.setting
 .DS_Store
 
 #Project
-skufifyPgData
+openfyPgData
 bin
 s3keys.properties

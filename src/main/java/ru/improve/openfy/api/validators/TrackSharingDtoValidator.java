@@ -1,10 +1,10 @@
-package ru.improve.skufify.api.validators;
+package ru.improve.openfy.api.validators;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
-import ru.improve.skufify.api.error.ServiceException;
+import ru.improve.openfy.api.error.ServiceException;
 
-import static ru.improve.skufify.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
+import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
 
 public abstract class TrackSharingDtoValidator {
 

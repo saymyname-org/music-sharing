@@ -1,4 +1,4 @@
-package ru.improve.skufify.util;
+package ru.improve.openfy.util;
 
 public class MessageKeys {
 

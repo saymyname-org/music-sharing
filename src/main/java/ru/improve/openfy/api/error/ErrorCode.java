@@ -1,4 +1,4 @@
-package ru.improve.skufify.api.error;
+package ru.improve.openfy.api.error;
 
 import lombok.AccessLevel;
 import lombok.Getter;

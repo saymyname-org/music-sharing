@@ -1,9 +1,9 @@
-package ru.improve.skufify.api.validators.imp;
+package ru.improve.openfy.api.validators.imp;
 
 import org.springframework.validation.Errors;
-import ru.improve.skufify.api.dto.upload.UploadTrackRequest;
-import ru.improve.skufify.api.validators.TrackSharingDtoValidator;
-import ru.improve.skufify.api.validators.TrackContollerValidator;
+import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
+import ru.improve.openfy.api.validators.TrackSharingDtoValidator;
+import ru.improve.openfy.api.validators.TrackContollerValidator;
 
 public class TrackValidatorImp extends TrackSharingDtoValidator implements TrackContollerValidator {
 

@@ -1,4 +1,4 @@
-package ru.improve.skufify.api;
+package ru.improve.openfy.api;
 
 public class Paths {
 
