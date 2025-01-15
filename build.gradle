@@ -38,7 +38,7 @@ flyway {
 	password = env.fetch('PG_PASSWORD')
 	locations = ['filesystem:src/main/resources/db.migration']
 	schemas = ['public']
-	cleanDisabled = false
+	cleanDisabled = true
 }
 
 configurations {
@@ -65,9 +65,6 @@ dependencies {
 //	implementation 'io.grpc:grpc-stub:1.69.0'
 //	compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
 //	implementation 'com.google.protobuf:protobuf-java:4.29.3'
-	implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
-
-	implementation 'com.google.protobuf:protobuf-java:4.29.3'
 	implementation 'net.devh:grpc-client-spring-boot-starter:3.1.0.RELEASE'
 
 	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'

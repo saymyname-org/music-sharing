@@ -1,10 +1,12 @@
 package ru.improve.openfy.core.grpc.imp;
 
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.stereotype.Service;
 import ru.improve.openfy.core.grpc.GrpcAuthClientService;
 import ru.improve.skufify.grpc.AuthClientGrpc;
 import ru.improve.skufify.grpc.AuthClientService;
 
+@Service
 public class GrpcAuthClientServiceImp implements GrpcAuthClientService {
 
     @GrpcClient("AuthClientGrpcService")

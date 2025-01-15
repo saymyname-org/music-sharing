@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.server.resource.web.authentication.BearerTokenAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.improve.openfy.api.filter.AuthFilter;
+import ru.improve.openfy.core.security.AuthService;
 
 @Configuration
 public class AuthConfiguration {
@@ -19,9 +21,15 @@ public class AuthConfiguration {
         return authConfig.getAuthenticationManager();
     }
 
+//    @Bean
+//    public GrpcAuthenticationReader grpcAuthenticationReader() {
+//        return null;
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
+            HttpSecurity http,
+            AuthService authService) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -30,7 +38,7 @@ public class AuthConfiguration {
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(conf -> conf.jwt(Customizer.withDefaults()))
-                .addFilterAfter(null, BearerTokenAuthenticationFilter.class);
+                .addFilterAfter(new AuthFilter(authService), BearerTokenAuthenticationFilter.class);
 
         return http.build();
     }

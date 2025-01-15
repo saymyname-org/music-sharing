@@ -7,9 +7,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import ru.improve.openfy.api.error.ErrorCode;
 import ru.improve.openfy.api.error.ServiceException;
-import ru.improve.openfy.core.grpc.imp.GrpcAuthClientServiceImp;
-import ru.improve.openfy.core.security.AuthToken;
-import ru.improve.openfy.core.security.UserPrincipal;
+import ru.improve.openfy.core.grpc.GrpcAuthClientService;
 import ru.improve.openfy.util.Mapper;
 import ru.improve.skufify.grpc.AuthClientService;
 
@@ -17,7 +15,7 @@ import ru.improve.skufify.grpc.AuthClientService;
 @RequiredArgsConstructor
 public class AuthProvider implements AuthenticationProvider {
 
-    private final GrpcAuthClientServiceImp grpcAuthClientServiceImp;
+    private final GrpcAuthClientService grpcAuthClientServiceImp;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

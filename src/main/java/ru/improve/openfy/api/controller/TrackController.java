@@ -25,7 +25,5 @@ public class TrackController {
                             BindingResult bindingResult) {
 
         trackContollerValidator.validate(uploadTrackRequest, bindingResult);
-
-
     }
 }

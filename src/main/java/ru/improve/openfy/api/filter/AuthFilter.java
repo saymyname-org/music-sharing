@@ -5,14 +5,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.improve.openfy.core.security.AuthService;
 
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@Component
 public class AuthFilter extends OncePerRequestFilter {
 
     private final AuthService authService;
