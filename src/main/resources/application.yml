@@ -16,7 +16,7 @@ spring:
 
 grpc:
   client:
-    myGrpcService:
+    AuthClientGrpcService:
       address: localhost:9090
       negotiation-type: plaintext
 
