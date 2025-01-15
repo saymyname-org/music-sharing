@@ -21,9 +21,11 @@ public class TrackController {
     private final TrackContollerValidator trackContollerValidator;
 
     @PostMapping(UPLOAD)
-    public void uploadTrack(@RequestBody @Valid UploadTrackRequest uploadTrackRequest,
+    public String uploadTrack(@RequestBody @Valid UploadTrackRequest uploadTrackRequest,
                             BindingResult bindingResult) {
 
         trackContollerValidator.validate(uploadTrackRequest, bindingResult);
+
+        return "something";
     }
 }

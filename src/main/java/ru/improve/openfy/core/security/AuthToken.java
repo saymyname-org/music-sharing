@@ -15,6 +15,13 @@ public class AuthToken extends AbstractAuthenticationToken {
         setAuthenticated(true);
     }
 
+    public AuthToken(String jwt) {
+        super(null);
+        this.userPrincipal = null;
+        this.jwt= jwt;
+        setAuthenticated(false);
+    }
+
     @Override
     public Object getCredentials() {
         return this.jwt;
