@@ -1,0 +1,35 @@
+server:
+  port: ${APPLICATION_PORT}
+
+spring:
+  application:
+    name: skufify-sharing-service
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    url: jdbc:postgresql://${PG_HOST}:${PG_PORT}/${PG_DATABASE}
+    username: ${PG_USER}
+    password: ${PG_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: false
+    open-in-view: false
+
+grpc:
+  client:
+    AuthClientGrpcService:
+      address: ${GRPC_AUTH_CLIENT_HOST}:${GRPC_AUTH_CLIENT_PORT}
+      negotiation-type: plaintext
+
+#app:
+#  token:
+#    secret: N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTczNDAxMT0MDExMjM1
+#  session:
+#    duration: 24h
+
+logging:
+  level:
+    org.springframework.security.web.FilterChainProxy: ERROR
+    ru.improve.unboundedSound: ERROR
