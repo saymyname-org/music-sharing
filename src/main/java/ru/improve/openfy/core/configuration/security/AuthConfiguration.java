@@ -12,6 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import ru.improve.openfy.api.filter.AuthFilter;
 import ru.improve.openfy.core.security.AuthService;
+import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -25,17 +26,20 @@ public class AuthConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-            AuthService authService) throws Exception {
+            AuthService authService,
+            CustomAuthorizationEntryPoint customAuthorizationEntryPoint) throws Exception {
 
-        http.csrf(AbstractHttpConfigurer::disable)
+        return http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
                                 .anyRequest().authenticated()
                 )
-                .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class);
-
-        return http.build();
+                .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)
+                .exceptionHandling(
+                        c -> c.authenticationEntryPoint(customAuthorizationEntryPoint)
+                )
+                .build();
     }
 
 }

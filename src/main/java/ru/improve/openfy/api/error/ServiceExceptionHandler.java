@@ -64,10 +64,10 @@ public class ServiceExceptionHandler {
 
     private Pair<ErrorCode, String> resolveException(Exception ex) {
         Pair<ErrorCode, String> resolvedException;
-        if (ex instanceof ServiceException) {
+         if (ex instanceof ServiceException) {
             resolvedException = resolveOpenfyException((ServiceException) ex);
         } else {
-            resolvedException = resolveErrorCode(INTERNAL_SERVER_ERROR);
+            resolvedException = resolveServerErrorException(ex);
         }
         return resolvedException;
     }
@@ -82,10 +82,13 @@ public class ServiceExceptionHandler {
         return Pair.of(ex.getCode(), messageBuild.toString());
     }
 
-    private Pair<ErrorCode, String> resolveErrorCode(ErrorCode errorCode) {
-        return Pair.of(
-                errorCode,
-                buildMessage(ERRORS_MAP.get(errorCode).getFirst(), null));
+    private Pair<ErrorCode, String> resolveServerErrorException(Exception ex) {
+        Pair<String, HttpStatus> errorPair = ERRORS_MAP.get(INTERNAL_SERVER_ERROR);
+        StringBuilder messageBuild  = new StringBuilder(buildMessage(errorPair.getFirst(), null));
+        if (ex.getMessage() != null) {
+            messageBuild.append(": " + ex.getMessage());
+        }
+        return Pair.of(INTERNAL_SERVER_ERROR, messageBuild.toString());
     }
 
     private String buildMessageFromOpenfyExceptions(ServiceException ex) {

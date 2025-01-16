@@ -9,6 +9,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ru.improve.openfy.api.error.ErrorCode;
+import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.security.AuthService;
 import ru.improve.openfy.core.security.AuthToken;
 
@@ -34,14 +36,17 @@ public class AuthServiceIml implements AuthService {
                     securityContext.setAuthentication(authentication);
                     return true;
                 }
-            } catch (Exception ex) {
-                log.error(ex.getMessage());
+            } catch (ServiceException ex) {
+                securityContext.setAuthentication(null);
+                SecurityContextHolder.clearContext();
+                response.reset();
+                throw new ServiceException(ErrorCode.UNAUTHORIZED, ex);
             }
         }
 
         securityContext.setAuthentication(null);
         SecurityContextHolder.clearContext();
         response.reset();
-        return false;
+        throw new ServiceException(ErrorCode.UNAUTHORIZED);
     }
 }
