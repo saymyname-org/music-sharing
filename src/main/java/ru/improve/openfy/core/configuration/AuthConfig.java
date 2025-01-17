@@ -1,4 +1,4 @@
-package ru.improve.openfy.core.configuration.security;
+package ru.improve.openfy.core.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
-public class AuthConfiguration {
+public class AuthConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {

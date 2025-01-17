@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -25,4 +26,6 @@ public class UploadTrackRequest {
     @NotNull
     @Max(100 * 1024 * 1024)
     private int size;
+
+    private MultipartFile file;
 }
