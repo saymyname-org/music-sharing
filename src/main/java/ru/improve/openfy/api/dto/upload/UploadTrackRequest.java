@@ -1,6 +1,5 @@
 package ru.improve.openfy.api.dto.upload;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,8 +23,5 @@ public class UploadTrackRequest {
     private String authorName;
 
     @NotNull
-    @Max(100 * 1024 * 1024)
-    private int size;
-
     private MultipartFile file;
 }
