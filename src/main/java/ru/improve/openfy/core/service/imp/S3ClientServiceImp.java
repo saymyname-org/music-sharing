@@ -11,8 +11,6 @@ import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
-import java.util.Map;
-
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -27,19 +25,13 @@ public class S3ClientServiceImp implements S3ClientService {
         MultipartFile file = uploadTrackRequest.getFile();
 
         try {
-            Map<String, String> metadata = Map.of(
-                    "size", String.valueOf(file.getBytes().length)
-            );
-
             PutObjectRequest putRequest = PutObjectRequest.builder()
                     .bucket(s3StorageConfigData.getMusicBucketName())
-                    .key(uploadTrackRequest.getTrackName())
-                    .metadata(metadata)
+                    .key(file.getOriginalFilename())
                     .build();
 
-            RequestBody requestBody = RequestBody.fromBytes(file.getBytes());
-
-        s3Client.putObject(putRequest, requestBody);
+            RequestBody requestBody = RequestBody.fromInputStream(file.getInputStream(), file.getSize());
+            s3Client.putObject(putRequest, requestBody);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

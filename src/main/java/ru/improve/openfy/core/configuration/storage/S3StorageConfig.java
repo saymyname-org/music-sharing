@@ -37,13 +37,13 @@ public class S3StorageConfig {
                 .defaultProvider()
                 .resolveEndpoint(s3EndpointParams).join();
 
-
         AwsCredentials awsCredentials = AwsBasicCredentials.create(s3AccessKey, s3SecretKey);
         AwsCredentialsProvider awsProvider = StaticCredentialsProvider.create(awsCredentials);
 
         return S3Client.builder()
                 .credentialsProvider(awsProvider)
                 .endpointOverride(s3Endpoint.url())
+                .region(Region.of(s3StorageConfigData.getSigningRegion()))
                 .forcePathStyle(true)
                 .build();
     }
