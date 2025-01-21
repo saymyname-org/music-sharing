@@ -28,7 +28,7 @@ public class Track {
     @Column(name = "author_name")
     private String authorName;
 
-    private int size;
+    private long size;
 
     private String hash;
 

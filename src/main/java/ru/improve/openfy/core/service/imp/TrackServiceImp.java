@@ -42,7 +42,7 @@ public class TrackServiceImp implements TrackService {
             Track track = Track.builder()
                     .name(uploadTrackRequest.getTrackName())
                     .authorName(uploadTrackRequest.getAuthorName())
-                    .size((int) uploadTrackRequest.getFile().getSize())
+                    .size(uploadTrackRequest.getFile().getSize())
                     .hash(hashFile)
                     .uploaderId(principal.getId())
                     .build();
