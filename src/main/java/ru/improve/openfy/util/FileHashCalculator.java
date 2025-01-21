@@ -12,6 +12,6 @@ public class FileHashCalculator {
 
     public String getHashFromFileInputString(InputStream inputStream) throws IOException {
         byte[] fileHashByteArray = DigestUtils.sha256(inputStream);
-        return Base64.getEncoder().encodeToString(fileHashByteArray);
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(fileHashByteArray);
     }
 }
