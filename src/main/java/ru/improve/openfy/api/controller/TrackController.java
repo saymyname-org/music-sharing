@@ -25,7 +25,7 @@ public class TrackController {
 
     @PostMapping(UPLOAD)
     public void uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest,
-                              BindingResult bindingResult) {
+                            BindingResult bindingResult) {
 
         trackContollerValidator.validate(uploadTrackRequest, bindingResult);
 
