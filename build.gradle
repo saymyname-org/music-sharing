@@ -38,7 +38,7 @@ flyway {
 	password = env.fetch('PG_PASSWORD')
 	locations = ['filesystem:src/main/resources/db.migration']
 	schemas = ['public']
-	cleanDisabled = true
+	cleanDisabled = false
 }
 
 configurations {
