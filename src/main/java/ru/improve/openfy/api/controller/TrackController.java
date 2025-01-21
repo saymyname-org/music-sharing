@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
 import ru.improve.openfy.api.validators.TrackContollerValidator;
-import ru.improve.openfy.core.service.S3ClientService;
+import ru.improve.openfy.core.service.TrackService;
 
 import static ru.improve.openfy.api.Paths.TRACK;
 import static ru.improve.openfy.api.Paths.UPLOAD;
@@ -21,16 +21,14 @@ public class TrackController {
 
     private final TrackContollerValidator trackContollerValidator;
 
-    private final S3ClientService s3ClientService;
+    private final TrackService trackService;
 
     @PostMapping(UPLOAD)
-    public String uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest,
+    public void uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest,
                               BindingResult bindingResult) {
 
         trackContollerValidator.validate(uploadTrackRequest, bindingResult);
 
-        s3ClientService.saveTrack(uploadTrackRequest);
-
-        return "something";
+        trackService.saveTrack(uploadTrackRequest);
     }
 }
