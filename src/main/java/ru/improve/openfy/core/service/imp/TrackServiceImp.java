@@ -7,19 +7,21 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.improve.openfy.api.dto.enums.MusicFormat;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
-import ru.improve.openfy.api.error.ErrorCode;
 import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.models.Track;
 import ru.improve.openfy.core.security.UserPrincipal;
 import ru.improve.openfy.core.service.S3ClientService;
 import ru.improve.openfy.core.service.TrackService;
 import ru.improve.openfy.repositories.TrackRepository;
+import ru.improve.openfy.util.EnumMapper;
 import ru.improve.openfy.util.FileHashCalculator;
 
 import java.io.IOException;
 
 import static ru.improve.openfy.api.error.ErrorCode.ALREADY_EXIST;
+import static ru.improve.openfy.api.error.ErrorCode.INTERNAL_SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -39,10 +41,13 @@ public class TrackServiceImp implements TrackService {
         try {
             String hashFile = FileHashCalculator.getHashFromFileInputString(uploadTrackRequest.getFile().getInputStream());
 
+            MusicFormat mf = EnumMapper.enumFromString(uploadTrackRequest.getMusicFormat(), MusicFormat.class, "music format");
+
             Track track = Track.builder()
                     .name(uploadTrackRequest.getTrackName())
                     .authorName(uploadTrackRequest.getAuthorName())
                     .size(uploadTrackRequest.getFile().getSize())
+                    .format(mf)
                     .hash(hashFile)
                     .uploaderId(principal.getId())
                     .build();
@@ -53,7 +58,7 @@ public class TrackServiceImp implements TrackService {
         } catch (DataIntegrityViolationException ex) {
             throw new ServiceException(ALREADY_EXIST, new String[]{"hash"});
         } catch (IOException ex) {
-            throw new ServiceException(ErrorCode.INTERNAL_SERVER_ERROR, ex);
+            throw new ServiceException(INTERNAL_SERVER_ERROR, ex);
         }
     }
 }
