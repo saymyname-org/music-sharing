@@ -7,12 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.improve.openfy.api.dto.enums.MusicFormat;
+import ru.improve.openfy.core.track.enums.MusicFormat;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
 import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.models.Track;
 import ru.improve.openfy.core.security.UserPrincipal;
-import ru.improve.openfy.core.service.S3ClientService;
+import ru.improve.openfy.core.service.S3StorageService;
 import ru.improve.openfy.core.service.TrackService;
 import ru.improve.openfy.repositories.TrackRepository;
 import ru.improve.openfy.util.EnumMapper;
@@ -30,7 +30,7 @@ public class TrackServiceImp implements TrackService {
 
     private final TrackRepository trackRepository;
 
-    private final S3ClientService s3ClientService;
+    private final S3StorageService s3StorageService;
 
     @Transactional
     @Override
@@ -54,7 +54,7 @@ public class TrackServiceImp implements TrackService {
 
             trackRepository.save(track);
 
-            s3ClientService.uploadTrackInStorage(uploadTrackRequest, hashFile);
+            s3StorageService.uploadTrackInStorage(uploadTrackRequest, hashFile);
         } catch (DataIntegrityViolationException ex) {
             throw new ServiceException(ALREADY_EXIST, new String[]{"hash"});
         } catch (IOException ex) {
