@@ -1,11 +1,11 @@
-package ru.improve.openfy.core.dao;
+package ru.improve.openfy.core.dao.imp;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.improve.openfy.core.dao.imp.SearchingDao;
+import ru.improve.openfy.core.dao.SearchingDao;
 import ru.improve.openfy.core.models.Track;
 
 import java.util.List;
@@ -22,13 +22,12 @@ public class SearchingDaoImp implements SearchingDao {
         Query query = em.createNativeQuery(
                     """
                     select id, name, author_name, format, size, hash, uploader from tracks t
-                    where t.name ~ :query || '%' or 
-                    t.author_name ~ :query || '%'
+                    where t.name ~* (:query || '*') or 
+                    t.author_name ~* (:query || '*')
                     """,
                         Track.class)
                 .setParameter("query", request);
 
-        query.executeUpdate();
         return query.getResultList();
     }
 }
