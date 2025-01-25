@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.improve.openfy.api.dto.enums.MusicFormat;
+import ru.improve.openfy.core.track.enums.MusicFormat;
 
 @Entity
 @Table(name = "tracks")

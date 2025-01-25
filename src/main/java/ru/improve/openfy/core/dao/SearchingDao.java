@@ -1,4 +1,4 @@
-package ru.improve.openfy.core.dao.imp;
+package ru.improve.openfy.core.dao;
 
 import ru.improve.openfy.core.models.Track;
 

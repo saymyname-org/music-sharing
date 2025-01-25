@@ -1,39 +1,39 @@
-package ru.improve.openfy.core.configuration.storage;
+package ru.improve.openfy.core.storage;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import lombok.Getter;
+import ru.improve.openfy.core.configuration.storage.S3StorageConfigData;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 import java.net.URI;
 
-@Configuration
-@RequiredArgsConstructor
-public class S3StorageConfig {
+@Getter
+public class S3StoragePresignerWrapper implements AutoCloseable {
 
     private final S3StorageConfigData s3StorageConfigData;
 
-    @Value("${openfy.s3.access_key}")
-    private String s3AccessKey;
+    private S3Presigner s3Presigner;
 
-    @Value("${openfy.s3.private_key}")
-    private String s3SecretKey;
+    public S3StoragePresignerWrapper(S3StorageConfigData s3StorageConfigData) {
+        this.s3StorageConfigData = s3StorageConfigData;
 
-    @Bean
-    public S3Client s3Client() {
-        AwsCredentials awsCredentials = AwsBasicCredentials.create(s3AccessKey, s3SecretKey);
+        AwsCredentials awsCredentials = AwsBasicCredentials.create(
+                s3StorageConfigData.getS3AccessKey(), s3StorageConfigData.getS3SecretKey());
         AwsCredentialsProvider awsProvider = StaticCredentialsProvider.create(awsCredentials);
 
-        return S3Client.builder()
+        s3Presigner = S3Presigner.builder()
                 .credentialsProvider(awsProvider)
                 .endpointOverride(URI.create(s3StorageConfigData.getServiceEndpoint()))
                 .region(Region.of(s3StorageConfigData.getSigningRegion()))
                 .build();
+    }
+
+    @Override
+    public void close() {
+        s3Presigner.close();
     }
 }
