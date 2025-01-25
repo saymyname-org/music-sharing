@@ -32,7 +32,7 @@ logging:
   level:
     org.springframework.security.web.FilterChainProxy: ERROR
     ru.improve.unboundedSound: ERROR
-    software.amazon.awssdk: ERROR
+#    software.amazon.awssdk: ERROR
 
 storage:
   s3:
