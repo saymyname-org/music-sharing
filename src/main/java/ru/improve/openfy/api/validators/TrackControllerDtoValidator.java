@@ -3,7 +3,7 @@ package ru.improve.openfy.api.validators;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-public interface TrackContollerValidator extends Validator {
+public interface TrackControllerDtoValidator extends Validator {
 
     boolean supports(Class<?> clazz);
 

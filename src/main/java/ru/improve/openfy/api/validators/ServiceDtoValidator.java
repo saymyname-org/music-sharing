@@ -9,7 +9,7 @@ import java.util.Set;
 
 import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
 
-public abstract class TrackSharingDtoValidator {
+public abstract class ServiceDtoValidator {
 
     protected void createAndThrowException(Errors errors) {
         if (errors.hasErrors()) {

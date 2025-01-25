@@ -3,11 +3,11 @@ package ru.improve.openfy.api.validators.imp;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
-import ru.improve.openfy.api.validators.TrackSharingDtoValidator;
-import ru.improve.openfy.api.validators.TrackContollerValidator;
+import ru.improve.openfy.api.validators.ServiceDtoValidator;
+import ru.improve.openfy.api.validators.TrackControllerDtoValidator;
 
 @Component
-public class TrackValidatorImp extends TrackSharingDtoValidator implements TrackContollerValidator {
+public class TrackControllerDtoDtoValidatorImp extends ServiceDtoValidator implements TrackControllerDtoValidator {
 
     @Override
     public boolean supports(Class<?> clazz) {
