@@ -39,3 +39,4 @@ storage:
     service-endpoint: https://storage.yandexcloud.net
     signing-region: ru-central1
     music-bucket-name: openfy-music-bucket
+    
