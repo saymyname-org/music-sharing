@@ -32,6 +32,9 @@ public class Artist {
     @OneToMany(mappedBy = "artist")
     private List<Track> trackList;
 
+    @OneToMany(mappedBy = "artist")
+    private List<Album> albums;
+
     @Column(name = "cover_url")
     private String coverUrl;
 
