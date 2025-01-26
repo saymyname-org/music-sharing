@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public interface S3StorageService {
 
-    void uploadTrackInStorage(UploadTrackRequest uploadTrackRequest, String fileHash) throws IOException;
+    void uploadTrackInStorage(UploadTrackRequest uploadTrackRequest, String fileHash, String bucket) throws IOException;
 
-    String getFileLink(String key);
+    String getFileLink(String key, String bucket);
 }
