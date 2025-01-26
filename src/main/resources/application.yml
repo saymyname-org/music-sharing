@@ -34,7 +34,7 @@ logging:
     ru.improve.unboundedSound: ERROR
 #    software.amazon.awssdk: ERROR
 
-storage:
+yandex-storage:
   s3:
     service-endpoint: https://storage.yandexcloud.net
     signing-region: ru-central1

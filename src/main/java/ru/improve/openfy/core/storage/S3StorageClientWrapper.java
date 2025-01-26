@@ -1,7 +1,7 @@
 package ru.improve.openfy.core.storage;
 
 import lombok.Getter;
-import ru.improve.openfy.core.configuration.storage.S3StorageConfigData;
+import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
@@ -14,21 +14,21 @@ import java.net.URI;
 @Getter
 public class S3StorageClientWrapper implements AutoCloseable {
 
-    private final S3StorageConfigData s3StorageConfigData;
+    private final YandexStorageConfigData yandexStorageConfigData;
 
     private S3Client s3Client;
 
-    public S3StorageClientWrapper(S3StorageConfigData s3StorageConfigData) {
-        this.s3StorageConfigData = s3StorageConfigData;
+    public S3StorageClientWrapper(YandexStorageConfigData yandexStorageConfigData) {
+        this.yandexStorageConfigData = yandexStorageConfigData;
 
         AwsCredentials awsCredentials = AwsBasicCredentials.create(
-                s3StorageConfigData.getS3AccessKey(), s3StorageConfigData.getS3SecretKey());
+                yandexStorageConfigData.getS3AccessKey(), yandexStorageConfigData.getS3SecretKey());
         AwsCredentialsProvider awsProvider = StaticCredentialsProvider.create(awsCredentials);
 
         s3Client = S3Client.builder()
                 .credentialsProvider(awsProvider)
-                .endpointOverride(URI.create(s3StorageConfigData.getServiceEndpoint()))
-                .region(Region.of(s3StorageConfigData.getSigningRegion()))
+                .endpointOverride(URI.create(yandexStorageConfigData.getServiceEndpoint()))
+                .region(Region.of(yandexStorageConfigData.getSigningRegion()))
                 .build();
     }
 
