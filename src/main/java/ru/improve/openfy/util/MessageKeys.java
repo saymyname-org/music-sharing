@@ -12,4 +12,7 @@ public class MessageKeys {
     public static final String INVALID_AUTHORIZATION = "session.cannot_authenticate";
     public static final String SESSION_DISABLE = "session.is_disable";
     public static final String SESSION_TOKEN_INVALID = "session.token_invalid";
+
+    public static final String VALIDATION_CHECK_VALUE_IS_NULL = "validation.check_value_is_null";
+    public static final String VALIDATION_CHECK_VALUE_IS_BLANK = "validation.check_value_is_blank";
 }

@@ -23,6 +23,4 @@ public class SearchTrackResponse {
     private String hash;
 
     private long uploaderId;
-
-    private String link;
 }

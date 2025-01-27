@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.improve.openfy.api.dto.searching.DownloadTrackResponse;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
 import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
@@ -23,6 +24,7 @@ import java.io.IOException;
 
 import static ru.improve.openfy.api.error.ErrorCode.ALREADY_EXIST;
 import static ru.improve.openfy.api.error.ErrorCode.INTERNAL_SERVER_ERROR;
+import static ru.improve.openfy.core.validators.Validators.checkNotBlank;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,7 @@ public class TrackServiceImp implements TrackService {
 
     @Transactional
     @Override
-    public void saveTrack(UploadTrackRequest uploadTrackRequest) {
+    public void uploadTrack(UploadTrackRequest uploadTrackRequest) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
 
@@ -63,5 +65,13 @@ public class TrackServiceImp implements TrackService {
         } catch (IOException ex) {
             throw new ServiceException(INTERNAL_SERVER_ERROR, ex);
         }
+    }
+
+    @Override
+    public DownloadTrackResponse getTrackDownloadLink(String trackHash) {
+        checkNotBlank(trackHash, "track");
+        return DownloadTrackResponse.builder()
+                .downloadLink(s3StorageService.getFileLink(trackHash, yandexStorageConfigData.getMusicBucketName()))
+                .build();
     }
 }

@@ -33,8 +33,6 @@ public class SearchingServiceImp implements SearchingService {
         return tracks.stream()
                 .map(track -> {
                     SearchTrackResponse searchTrackResponse = searchTrackMapper.mapToSearchTrackResponse(track);
-                    searchTrackResponse.setLink(s3StorageService.getFileLink(
-                            track.getHash(), yandexStorageConfigData.getMusicBucketName()));
                     return searchTrackResponse;
                 })
                 .toList();
