@@ -36,10 +36,12 @@ public class TrackController {
     }
 
     @PostMapping(UPLOAD)
-    public void uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest,
+    public ResponseEntity<Void> uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest,
                             BindingResult bindingResult) {
 
         trackControllerDtoValidator.validate(uploadTrackRequest, bindingResult);
         trackService.uploadTrack(uploadTrackRequest);
+
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 }

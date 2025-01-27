@@ -1,5 +1,6 @@
 package ru.improve.openfy.api.dto.artist;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
@@ -9,5 +10,6 @@ import lombok.extern.jackson.Jacksonized;
 @Jacksonized
 public class SelectArtistRequest {
 
+    @NotNull
     private String name;
 }

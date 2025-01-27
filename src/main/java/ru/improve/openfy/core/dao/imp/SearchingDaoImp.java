@@ -20,11 +20,11 @@ public class SearchingDaoImp implements SearchingDao {
     @Override
     public List<Track> findMaterials(String request) {
         Query query = em.createNativeQuery(
-                    """
-                    select id, name, author_name, format, size, hash, uploader from tracks t
-                    where t.name ~* (:query || '*') or 
-                    t.author_name ~* (:query || '*')
-                    """,
+                        """
+                        select * from tracks t
+                        where t.name ~* (:query || '*') or 
+                        t.author_name ~* (:query || '*')
+                        """,
                         Track.class)
                 .setParameter("query", request);
 
