@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ArtistDao {
 
-    List<Artist> findAllArtists(String name);
+    List<Artist> findAllArtistsByName(String name);
 }

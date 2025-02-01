@@ -16,7 +16,7 @@ public class ArtistDaoImp implements ArtistDao {
     private final EntityManager em;
 
     @Override
-    public List<Artist> findAllArtists(String name) {
+    public List<Artist> findAllArtistsByName(String name) {
         Query query = em.createNativeQuery(
                         """
                         select * from artists a

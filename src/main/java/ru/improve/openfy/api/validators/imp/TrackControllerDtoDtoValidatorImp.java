@@ -2,7 +2,6 @@ package ru.improve.openfy.api.validators.imp;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import ru.improve.openfy.api.dto.searching.DownloadTracksRequest;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
 import ru.improve.openfy.api.validators.ServiceDtoValidator;
 import ru.improve.openfy.api.validators.TrackControllerDtoValidator;
@@ -12,8 +11,7 @@ public class TrackControllerDtoDtoValidatorImp extends ServiceDtoValidator imple
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return clazz.equals(UploadTrackRequest.class) ||
-                clazz.equals(DownloadTracksRequest.class);
+        return clazz.equals(UploadTrackRequest.class);
     }
 
     @Override

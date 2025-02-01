@@ -2,7 +2,6 @@ package ru.improve.openfy.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,11 +34,12 @@ public class ArtistController {
     }
 
     @GetMapping(SELECT)
-    public void findArtistsWithParameters(@Valid @RequestBody SelectArtistRequest selectArtistRequest,
-                                          BindingResult bindingResult) {
+    public String findArtistsWithParameters(@Valid @RequestBody SelectArtistRequest selectArtistRequest/*,
+                                          BindingResult bindingResult*/) {
 
-        artistControllerDtoValidator.validate(selectArtistRequest, bindingResult);
+//        artistControllerDtoValidator.validate(selectArtistRequest, bindingResult);
 
+        return "findArtistsWithParameters";
     }
 
     @PostMapping

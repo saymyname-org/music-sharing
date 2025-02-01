@@ -1,19 +1,21 @@
 package ru.improve.openfy.api.dto.artist;
 
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 import lombok.extern.jackson.Jacksonized;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @Jacksonized
-public class SelectArtistRequest {
+public class SelectArtistResponse {
 
-    @NotNull
+    private int id;
+
     private String name;
 
-    @Min(-1)
-    private int limit;
+    private String coverUrl;
+
+    private LocalDate uploadDate;
 }

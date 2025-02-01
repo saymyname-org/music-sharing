@@ -17,6 +17,7 @@ import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
 
 import static ru.improve.openfy.api.Paths.ARTIST;
 import static ru.improve.openfy.api.Paths.SEARCH;
+import static ru.improve.openfy.api.Paths.SELECT;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +39,7 @@ public class AuthConfig {
                 .authorizeHttpRequests(
                         auth -> auth
                                 .requestMatchers(HttpMethod.GET, SEARCH).permitAll()
-                                .requestMatchers(HttpMethod.GET, ARTIST + "/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, ARTIST + SELECT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)
