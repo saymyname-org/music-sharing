@@ -38,8 +38,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(HttpMethod.GET, SEARCH).permitAll()
-                                .requestMatchers(HttpMethod.GET, ARTIST + SELECT).permitAll()
+                                .requestMatchers(HttpMethod.GET, SEARCH, ARTIST + SELECT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)
