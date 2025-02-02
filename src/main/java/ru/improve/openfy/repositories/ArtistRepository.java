@@ -16,5 +16,5 @@ public interface ArtistRepository extends
 
     Page<Artist> findAll(Pageable page);
 
-    List<Artist> findAllByName(String name, Pageable page);
+    List<Artist> findAllByNameContainingIgnoreCase(String name, Pageable page);
 }

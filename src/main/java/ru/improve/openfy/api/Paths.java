@@ -2,6 +2,8 @@ package ru.improve.openfy.api;
 
 public class Paths {
 
+    public static final String ID = "/{id}";
+
     public static final String TRACK = "/tracks";
 
     public static final String UPLOAD = "/upload";
@@ -10,7 +12,9 @@ public class Paths {
 
     public static final String DOWNLOAD = "download";
 
-    public static final String ARTIST = "/artists";
+    public static final String ARTIST = "/artist";
+
+    public static final String ARTISTS = "/artists";
 
     public static final String ALL = "/all";
 
@@ -18,5 +22,5 @@ public class Paths {
 
     public static final String LIMIT = "/{limit}";
 
-    public static final String ALBUM = "/albums";
+    public static final String ALBUMS = "/albums";
 }

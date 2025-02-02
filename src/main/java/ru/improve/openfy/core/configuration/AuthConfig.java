@@ -15,7 +15,7 @@ import ru.improve.openfy.api.filter.AuthFilter;
 import ru.improve.openfy.core.security.AuthService;
 import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
 
-import static ru.improve.openfy.api.Paths.ARTIST;
+import static ru.improve.openfy.api.Paths.ARTISTS;
 import static ru.improve.openfy.api.Paths.SEARCH;
 import static ru.improve.openfy.api.Paths.SELECT;
 
@@ -38,7 +38,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(HttpMethod.GET, SEARCH, ARTIST + SELECT).permitAll()
+                                .requestMatchers(HttpMethod.GET, SEARCH, ARTISTS + SELECT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)

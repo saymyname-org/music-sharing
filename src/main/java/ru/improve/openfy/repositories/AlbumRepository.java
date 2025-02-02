@@ -16,5 +16,7 @@ public interface AlbumRepository extends
 
     Page<Album> findAll(Pageable page);
 
-    List<Album> findAllByName(String name, Pageable page);
+    List<Album> findAllByNameContainingIgnoreCase(String name, Pageable page);
+
+    List<Album> findAllByArtist_Id(int artistId);
 }

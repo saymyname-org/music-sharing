@@ -22,12 +22,12 @@ import ru.improve.openfy.core.service.ArtistService;
 import java.util.List;
 
 import static ru.improve.openfy.api.Paths.ALL;
-import static ru.improve.openfy.api.Paths.ARTIST;
+import static ru.improve.openfy.api.Paths.ARTISTS;
 import static ru.improve.openfy.api.Paths.SELECT;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(ARTIST)
+@RequestMapping(ARTISTS)
 public class ArtistController {
 
     private final ArtistService artistService;

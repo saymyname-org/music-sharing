@@ -12,7 +12,6 @@ import ru.improve.openfy.api.dto.artist.CreateArtistResponse;
 import ru.improve.openfy.api.dto.artist.SelectArtistRequest;
 import ru.improve.openfy.api.dto.artist.SelectArtistResponse;
 import ru.improve.openfy.core.configuration.EntitySelectLimits;
-import ru.improve.openfy.core.dao.ArtistDao;
 import ru.improve.openfy.core.mappers.ArtistMapper;
 import ru.improve.openfy.core.models.Artist;
 import ru.improve.openfy.core.service.ArtistService;
@@ -27,8 +26,6 @@ import static ru.improve.openfy.core.configuration.EntitySelectLimits.WITHOUT_LI
 public class ArtistServiceImp implements ArtistService {
 
     private final ArtistRepository artistRepository;
-
-    private final ArtistDao artistDao;
 
     private final ArtistMapper artistMapper;
 
@@ -46,8 +43,8 @@ public class ArtistServiceImp implements ArtistService {
                 itemsPerPage,
                 Sort.by("name"));
 
-        Page<Artist> artistPage = artistRepository.findAll(page);
-        return artistPage.get()
+        Page<Artist> artistsPage = artistRepository.findAll(page);
+        return artistsPage.get()
                 .map(artistMapper::toSearchArtistResponse)
                 .toList();
     }
@@ -65,9 +62,8 @@ public class ArtistServiceImp implements ArtistService {
                 itemsPerPage,
                 Sort.by("name"));
 
-//        List<Artist> artistList = artistRepository.findAllByName(selectArtistRequest.getName(), page);
-        List<Artist> artistList = artistDao.findAllArtistsByName(selectArtistRequest.getName());
-        return artistList.stream()
+        List<Artist> artists = artistRepository.findAllByNameContainingIgnoreCase(selectArtistRequest.getName(), page);
+        return artists.stream()
                 .map(artistMapper::toSearchArtistResponse)
                 .toList();
     }
