@@ -1,7 +1,6 @@
 package ru.improve.openfy.api.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,8 +22,6 @@ import static ru.improve.openfy.api.Paths.ALL;
 import static ru.improve.openfy.api.Paths.ARTIST;
 import static ru.improve.openfy.api.Paths.ID;
 import static ru.improve.openfy.api.Paths.SELECT;
-import static ru.improve.openfy.core.configuration.EntitySelectLimits.MAX_SELECT_ITEMS_NUMBER;
-import static ru.improve.openfy.core.configuration.EntitySelectLimits.WITHOUT_LIMIT_CONSTANT;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,7 +32,7 @@ public class AlbumController {
 
     @GetMapping(ALL)
     public ResponseEntity<List<SelectAlbumResponse>> getAllAlbums(@RequestParam @Min(0) int page,
-                                                                  @RequestParam @Min(WITHOUT_LIMIT_CONSTANT) @Max(MAX_SELECT_ITEMS_NUMBER) int itemsPerPage) {
+                                                                  @RequestParam @Min(0) int itemsPerPage) {
 
         List<SelectAlbumResponse> albums = albumService.getAllAlbumsWithParameters(page, itemsPerPage);
         return new ResponseEntity<>(albums, HttpStatus.OK);

@@ -1,6 +1,7 @@
 package ru.improve.openfy.api.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,8 @@ public class ArtistController {
     private final ArtistService artistService;
 
     @GetMapping(ALL)
-    public ResponseEntity<List<SelectArtistResponse>> findAllArtists(@RequestParam int page,
-                                                                     @RequestParam int itemsPerPage) {
+    public ResponseEntity<List<SelectArtistResponse>> findAllArtists(@RequestParam @Min(0) int page,
+                                                                     @RequestParam @Min(0) int itemsPerPage) {
 
         List<SelectArtistResponse> selectArtistResponseList = artistService.getAllArtist(page, itemsPerPage);
         return new ResponseEntity<>(selectArtistResponseList, HttpStatus.OK);

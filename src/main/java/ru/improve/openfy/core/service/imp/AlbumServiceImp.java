@@ -21,8 +21,6 @@ import ru.improve.openfy.repositories.ArtistRepository;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static ru.improve.openfy.core.configuration.EntitySelectLimits.WITHOUT_LIMIT_CONSTANT;
-
 @RequiredArgsConstructor
 @Service
 public class AlbumServiceImp implements AlbumService {
@@ -38,7 +36,7 @@ public class AlbumServiceImp implements AlbumService {
     @Transactional
     @Override
     public List<SelectAlbumResponse> getAllAlbumsWithParameters(int pageNumber, int itemsPerPage) {
-        if (itemsPerPage == WITHOUT_LIMIT_CONSTANT || itemsPerPage > selectLimits.getAlbumsPerPage()) {
+        if (itemsPerPage > selectLimits.getAlbumsPerPage()) {
             itemsPerPage = selectLimits.getAlbumsPerPage();
         }
 
@@ -55,7 +53,7 @@ public class AlbumServiceImp implements AlbumService {
     @Override
     public List<SelectAlbumResponse> getAllAlbumsWithParameters(SelectAlbumsRequest selectAlbumsRequest) {
         int itemsPerPage = selectAlbumsRequest.getItemsPerPage();
-        if (itemsPerPage == WITHOUT_LIMIT_CONSTANT) {
+        if (itemsPerPage > selectLimits.getAlbumsPerPage()) {
             itemsPerPage = selectLimits.getAlbumsPerPage();
         }
 

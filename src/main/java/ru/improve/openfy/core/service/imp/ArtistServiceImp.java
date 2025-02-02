@@ -1,6 +1,7 @@
 package ru.improve.openfy.core.service.imp;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,8 @@ import ru.improve.openfy.api.dto.artist.CreateArtistRequest;
 import ru.improve.openfy.api.dto.artist.CreateArtistResponse;
 import ru.improve.openfy.api.dto.artist.SelectArtistRequest;
 import ru.improve.openfy.api.dto.artist.SelectArtistResponse;
+import ru.improve.openfy.api.error.ErrorCode;
+import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.configuration.EntitySelectLimits;
 import ru.improve.openfy.core.mappers.ArtistMapper;
 import ru.improve.openfy.core.models.Artist;
@@ -18,8 +21,6 @@ import ru.improve.openfy.core.service.ArtistService;
 import ru.improve.openfy.repositories.ArtistRepository;
 
 import java.util.List;
-
-import static ru.improve.openfy.core.configuration.EntitySelectLimits.WITHOUT_LIMIT_CONSTANT;
 
 @RequiredArgsConstructor
 @Service
@@ -34,7 +35,7 @@ public class ArtistServiceImp implements ArtistService {
     @Transactional
     @Override
     public List<SelectArtistResponse> getAllArtist(int pageNumber, int itemsPerPage) {
-        if (itemsPerPage == WITHOUT_LIMIT_CONSTANT) {
+        if (itemsPerPage > selectLimits.getArtistsPerPage()) {
             itemsPerPage = selectLimits.getArtistsPerPage();
         }
 
@@ -53,7 +54,7 @@ public class ArtistServiceImp implements ArtistService {
     @Override
     public List<SelectArtistResponse> getArtistWithParameters(SelectArtistRequest selectArtistRequest) {
         int itemsPerPage = selectArtistRequest.getItemsPerPage();
-        if (itemsPerPage == WITHOUT_LIMIT_CONSTANT) {
+        if (itemsPerPage > selectLimits.getArtistsPerPage()) {
             itemsPerPage = selectLimits.getArtistsPerPage();
         }
 
@@ -72,7 +73,11 @@ public class ArtistServiceImp implements ArtistService {
     @Override
     public CreateArtistResponse createArtist(CreateArtistRequest createArtistRequest) {
         Artist artist = artistMapper.toArtist(createArtistRequest);
-        artistRepository.save(artist);
+        try {
+            artistRepository.save(artist);
+        } catch (DataIntegrityViolationException ex) {
+            throw new ServiceException(ErrorCode.ALREADY_EXIST, new String[]{"name"});
+        }
         return CreateArtistResponse.builder()
                 .id(artist.getId())
                 .build();
