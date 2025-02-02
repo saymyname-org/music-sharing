@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ArtistService {
 
-    List<SelectArtistResponse> getAllArtist(int limit);
+    List<SelectArtistResponse> getAllArtist(int pageNumber, int itemsPerPage);
 
     List<SelectArtistResponse> getArtistWithParameters(SelectArtistRequest selectArtistRequest);
 

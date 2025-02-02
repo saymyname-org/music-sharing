@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.improve.openfy.api.dto.searching.DownloadTrackResponse;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
 import ru.improve.openfy.api.error.ServiceException;
-import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
+import ru.improve.openfy.core.configuration.YandexStorageConfigData;
 import ru.improve.openfy.core.models.Track;
 import ru.improve.openfy.core.security.UserPrincipal;
 import ru.improve.openfy.core.service.S3StorageService;

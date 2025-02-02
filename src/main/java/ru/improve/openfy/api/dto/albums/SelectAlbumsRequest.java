@@ -1,4 +1,4 @@
-package ru.improve.openfy.api.dto.artist;
+package ru.improve.openfy.api.dto.albums;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +11,7 @@ import static ru.improve.openfy.core.configuration.EntitySelectLimits.WITHOUT_LI
 @Data
 @Builder
 @Jacksonized
-public class SelectArtistRequest {
+public class SelectAlbumsRequest {
 
     @NotNull
     private String name;

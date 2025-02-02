@@ -1,4 +1,4 @@
-package ru.improve.openfy.core.configuration.security;
+package ru.improve.openfy.core.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

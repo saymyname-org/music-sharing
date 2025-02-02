@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
-import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
+import ru.improve.openfy.core.configuration.YandexStorageConfigData;
 import ru.improve.openfy.core.service.S3StorageService;
 import ru.improve.openfy.core.storage.S3StorageClientWrapper;
 import ru.improve.openfy.core.storage.S3StoragePresignerWrapper;

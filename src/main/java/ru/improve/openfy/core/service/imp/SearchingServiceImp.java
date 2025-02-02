@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.improve.openfy.api.dto.searching.SearchTrackRequest;
 import ru.improve.openfy.api.dto.searching.SearchTrackResponse;
-import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
+import ru.improve.openfy.core.configuration.YandexStorageConfigData;
 import ru.improve.openfy.core.dao.SearchingDao;
 import ru.improve.openfy.core.mappers.SearchTrackMapper;
 import ru.improve.openfy.core.models.Track;

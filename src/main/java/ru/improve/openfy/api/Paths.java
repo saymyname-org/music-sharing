@@ -17,4 +17,6 @@ public class Paths {
     public static final String SELECT = "/select";
 
     public static final String LIMIT = "/{limit}";
+
+    public static final String ALBUM = "/albums";
 }
