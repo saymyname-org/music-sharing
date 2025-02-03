@@ -1,5 +1,7 @@
 package ru.improve.openfy.core.service;
 
+import ru.improve.openfy.api.dto.albums.CreateAlbumRequest;
+import ru.improve.openfy.api.dto.albums.CreateAlbumResponse;
 import ru.improve.openfy.api.dto.albums.SelectAlbumResponse;
 import ru.improve.openfy.api.dto.albums.SelectAlbumsRequest;
 
@@ -12,4 +14,6 @@ public interface AlbumService {
     List<SelectAlbumResponse> getAllAlbumsWithParameters(SelectAlbumsRequest selectAlbumsRequest);
 
     List<SelectAlbumResponse> getAllAlbumsByArtistId(int artistId);
+
+    CreateAlbumResponse createAlbum(CreateAlbumRequest createAlbumRequest);
 }

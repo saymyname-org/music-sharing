@@ -53,7 +53,7 @@ public class ArtistController {
     }
 
     @PatchMapping()
-    public void patchArtist(@Valid @RequestBody PatchArtistRequest patchArtistRequest) {
-
+    public ResponseEntity<String> patchArtist(@Valid @RequestBody PatchArtistRequest patchArtistRequest) {
+        return new ResponseEntity<>("nothing happened", HttpStatus.OK);
     }
 }
