@@ -18,7 +18,7 @@ public enum ErrorCode {
 
     SESSION_IS_OVER(5),
 
-//    ILLEGAL_DTO_VALUE(6),
+    ILLEGAL_DTO_VALUE(6),
 
     ILLEGAL_VALUE(7);
 

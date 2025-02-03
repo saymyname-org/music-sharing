@@ -2,7 +2,6 @@ package ru.improve.openfy.core.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,10 +13,6 @@ import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import ru.improve.openfy.api.filter.AuthFilter;
 import ru.improve.openfy.core.security.AuthService;
 import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
-
-import static ru.improve.openfy.api.Paths.ARTISTS;
-import static ru.improve.openfy.api.Paths.SEARCH;
-import static ru.improve.openfy.api.Paths.SELECT;
 
 @Configuration
 @EnableWebSecurity
@@ -38,7 +33,7 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers(HttpMethod.GET, SEARCH, ARTISTS + SELECT).permitAll()
+//                                .requestMatchers(HttpMethod.GET, SEARCH, ARTISTS + SELECT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)

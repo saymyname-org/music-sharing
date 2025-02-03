@@ -38,7 +38,8 @@ public class S3StorageServiceImp implements S3StorageService {
 
             Map<String, String> fileMetadata = Map.of(
                     "trackName", uploadTrackRequest.getTrackName(),
-                    "authorName", uploadTrackRequest.getAuthorName(),
+                    "artistId", String.valueOf(uploadTrackRequest.getArtistId()),
+                    "albumId", String.valueOf(uploadTrackRequest.getAlbumId()),
                     "fileSize", String.valueOf(file.getSize())
             );
 
