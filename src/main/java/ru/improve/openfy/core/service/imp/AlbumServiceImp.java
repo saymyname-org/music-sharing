@@ -25,6 +25,8 @@ import ru.improve.openfy.repositories.ArtistRepository;
 import java.util.List;
 import java.util.stream.Stream;
 
+import static ru.improve.openfy.api.error.ErrorCode.NOT_FOUND;
+
 @RequiredArgsConstructor
 @Service
 public class AlbumServiceImp implements AlbumService {
@@ -50,7 +52,7 @@ public class AlbumServiceImp implements AlbumService {
                 Sort.by("name"));
 
         Page<Album> albumsPage = albumRepository.findAll(page);
-        return albumStreamToListMap(albumsPage.get());
+        return albumStreamToListSelectAlbumResponseMap(albumsPage.get());
     }
 
     @Transactional
@@ -67,24 +69,31 @@ public class AlbumServiceImp implements AlbumService {
                 Sort.by("name"));
 
         List<Album> albums = albumRepository.findAllByNameContainingIgnoreCase(selectAlbumsRequest.getName(), page);
-        return albumStreamToListMap(albums.stream());
+        return albumStreamToListSelectAlbumResponseMap(albums.stream());
     }
 
     @Transactional
     @Override
     public List<SelectAlbumResponse> getAllAlbumsByArtistId(int artistId) {
         if (!artistRepository.existsById(artistId)) {
-            throw new ServiceException(ErrorCode.NOT_FOUND, "artistId");
+            throw new ServiceException(NOT_FOUND, "artistId");
         }
         List<Album> albums = albumRepository.findAllByArtist_Id(artistId);
-        return albumStreamToListMap(albums.stream());
+        return albumStreamToListSelectAlbumResponseMap(albums.stream());
+    }
+
+    @Transactional
+    @Override
+    public Album getAlbumById(int id) {
+        return albumRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(NOT_FOUND, "album", "id"));
     }
 
     @Transactional
     @Override
     public CreateAlbumResponse createAlbum(CreateAlbumRequest createAlbumRequest) {
         Artist artist = artistRepository.findById(createAlbumRequest.getArtistId())
-                .orElseThrow(() -> new ServiceException(ErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new ServiceException(NOT_FOUND));
 
         Album album = Album.builder()
                 .name(createAlbumRequest.getName())
@@ -103,7 +112,7 @@ public class AlbumServiceImp implements AlbumService {
                 .build();
     }
 
-    private List<SelectAlbumResponse> albumStreamToListMap(Stream<Album> albumStream) {
+    private List<SelectAlbumResponse> albumStreamToListSelectAlbumResponseMap(Stream<Album> albumStream) {
         return albumStream
                 .map(album -> {
                     SelectAlbumResponse selectAlbumResponse = albumMapper.toSelectAlbumsResponse(album);

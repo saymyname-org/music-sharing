@@ -21,6 +21,9 @@ import ru.improve.openfy.core.service.ArtistService;
 import ru.improve.openfy.repositories.ArtistRepository;
 
 import java.util.List;
+import java.util.stream.Stream;
+
+import static ru.improve.openfy.api.error.ErrorCode.NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -45,9 +48,7 @@ public class ArtistServiceImp implements ArtistService {
                 Sort.by("name"));
 
         Page<Artist> artistsPage = artistRepository.findAll(page);
-        return artistsPage.get()
-                .map(artistMapper::toSearchArtistResponse)
-                .toList();
+        return artistStreamToSelectArtistResponseListMap(artistsPage.get());
     }
 
     @Transactional
@@ -64,9 +65,14 @@ public class ArtistServiceImp implements ArtistService {
                 Sort.by("name"));
 
         List<Artist> artists = artistRepository.findAllByNameContainingIgnoreCase(selectArtistRequest.getName(), page);
-        return artists.stream()
-                .map(artistMapper::toSearchArtistResponse)
-                .toList();
+        return artistStreamToSelectArtistResponseListMap(artists.stream());
+    }
+
+    @Transactional
+    @Override
+    public Artist getArtistById(int id) {
+        return artistRepository.findById(id)
+                .orElseThrow(() -> new ServiceException(NOT_FOUND, "artist", "id"));
     }
 
     @Transactional
@@ -81,5 +87,11 @@ public class ArtistServiceImp implements ArtistService {
         return CreateArtistResponse.builder()
                 .id(artist.getId())
                 .build();
+    }
+
+    private List<SelectArtistResponse> artistStreamToSelectArtistResponseListMap(Stream<Artist> artistStream) {
+        return artistStream
+                .map(artistMapper::toSearchArtistResponse)
+                .toList();
     }
 }

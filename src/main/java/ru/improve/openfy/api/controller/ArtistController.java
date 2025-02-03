@@ -33,7 +33,7 @@ public class ArtistController {
 
     private final ArtistService artistService;
 
-    @GetMapping(ALL)
+    @GetMapping(SELECT + ALL)
     public ResponseEntity<List<SelectArtistResponse>> findAllArtists(@RequestParam @Min(0) int page,
                                                                      @RequestParam @Min(0) int itemsPerPage) {
 

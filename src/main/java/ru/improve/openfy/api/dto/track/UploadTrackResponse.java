@@ -1,4 +1,4 @@
-package ru.improve.openfy.api.dto.searching;
+package ru.improve.openfy.api.dto.track;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.extern.jackson.Jacksonized;
 @Data
 @Builder
 @Jacksonized
-public class DownloadTrackResponse {
+public class UploadTrackResponse {
 
-    private String downloadLink;
+    private long id;
 }

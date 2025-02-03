@@ -40,6 +40,6 @@ yandex-storage:
     music-bucket-name: openfy-music-bucket
 
 select-limits:
-  artistsPerPage: 50
-  albumsPerPage: 50
-  tracksPerPage: 50
+  artistsPerPage: 20
+  albumsPerPage: 20
+  tracksPerPage: 20

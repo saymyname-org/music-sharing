@@ -34,7 +34,7 @@ public class AlbumController {
 
     private final AlbumService albumService;
 
-    @GetMapping(ALL)
+    @GetMapping(SELECT + ALL)
     public ResponseEntity<List<SelectAlbumResponse>> getAllAlbums(@RequestParam @Min(0) int page,
                                                                   @RequestParam @Min(0) int itemsPerPage) {
 
