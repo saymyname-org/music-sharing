@@ -61,7 +61,7 @@ public class TrackServiceImp implements TrackService {
 
             s3StorageService.uploadTrackInStorage(uploadTrackRequest, hashFile, yandexStorageConfigData.getMusicBucketName());
         } catch (DataIntegrityViolationException ex) {
-            throw new ServiceException(ALREADY_EXIST, new String[]{"hash"});
+            throw new ServiceException(ALREADY_EXIST, "hash");
         } catch (IOException ex) {
             throw new ServiceException(INTERNAL_SERVER_ERROR, ex);
         }

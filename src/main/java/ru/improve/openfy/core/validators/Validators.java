@@ -12,14 +12,14 @@ public class Validators {
 
     public static void checkNotNull(Object value, String valueName) {
         if (value == null) {
-            throw new ServiceException(ILLEGAL_VALUE, VALIDATION_CHECK_VALUE_IS_NULL, new String[]{valueName});
+            throw new ServiceException(ILLEGAL_VALUE, VALIDATION_CHECK_VALUE_IS_NULL, valueName);
         }
     }
 
     public static void checkNotBlank(String value, String valueName) {
         checkNotNull(value, valueName);
         if (value.isBlank()) {
-            throw new ServiceException(ILLEGAL_VALUE, VALIDATION_CHECK_VALUE_IS_BLANK, new String[]{valueName});
+            throw new ServiceException(ILLEGAL_VALUE, VALIDATION_CHECK_VALUE_IS_BLANK, valueName);
         }
     }
 }

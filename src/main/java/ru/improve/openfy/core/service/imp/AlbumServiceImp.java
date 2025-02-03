@@ -74,7 +74,7 @@ public class AlbumServiceImp implements AlbumService {
     @Override
     public List<SelectAlbumResponse> getAllAlbumsByArtistId(int artistId) {
         if (!artistRepository.existsById(artistId)) {
-            throw new ServiceException(ErrorCode.NOT_FOUND, new String[]{"artistId"});
+            throw new ServiceException(ErrorCode.NOT_FOUND, "artistId");
         }
         List<Album> albums = albumRepository.findAllByArtist_Id(artistId);
         return albumStreamToListMap(albums.stream());
@@ -95,7 +95,7 @@ public class AlbumServiceImp implements AlbumService {
         try {
             albumRepository.save(album);
         } catch (DataIntegrityViolationException ex) {
-            throw new ServiceException(ErrorCode.ALREADY_EXIST, new String[]{"name"});
+            throw new ServiceException(ErrorCode.ALREADY_EXIST, "name");
         }
 
         return CreateAlbumResponse.builder()
