@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-@Table(name = "artist")
+@Table(name = "artists")
 @Entity
 @Data
 @Builder

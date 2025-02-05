@@ -58,6 +58,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.0.6'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:3.2.5'
+
 	implementation 'commons-codec:commons-codec:1.17.1'
 	implementation 'software.amazon.awssdk:aws-sdk-java:2.30.2'
 
@@ -68,8 +71,7 @@ dependencies {
 
 	implementation 'com.google.guava:guava:33.4.0-jre'
 
-	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
-	implementation 'org.hibernate.validator:hibernate-validator-annotation-processor:8.0.1.Final'
+	implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
 
 	runtimeOnly 'org.postgresql:postgresql'
 

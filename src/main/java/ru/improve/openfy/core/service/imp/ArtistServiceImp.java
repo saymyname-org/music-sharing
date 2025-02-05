@@ -20,6 +20,8 @@ import ru.improve.openfy.core.models.Artist;
 import ru.improve.openfy.core.service.ArtistService;
 import ru.improve.openfy.repositories.ArtistRepository;
 
+import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -79,11 +81,19 @@ public class ArtistServiceImp implements ArtistService {
     @Override
     public CreateArtistResponse createArtist(CreateArtistRequest createArtistRequest) {
         Artist artist = artistMapper.toArtist(createArtistRequest);
+        artist.setUploadDate(LocalDate.now());
+
         try {
             artistRepository.save(artist);
         } catch (DataIntegrityViolationException ex) {
-            throw new ServiceException(ErrorCode.ALREADY_EXIST, new String[]{"name"});
+
+            /* заменить везде на маппер исключений */
+            SQLException psqlException = (SQLException) ex.getCause().getCause();
+            String errorCode = psqlException.getSQLState();
+
+            throw new ServiceException(ErrorCode.ALREADY_EXIST, "artist", "name");
         }
+
         return CreateArtistResponse.builder()
                 .id(artist.getId())
                 .build();
