@@ -32,10 +32,14 @@ logging:
   level:
     org.springframework.security.web.FilterChainProxy: ERROR
     ru.improve.unboundedSound: ERROR
-#    software.amazon.awssdk: ERROR
 
 yandex-storage:
   s3:
     service-endpoint: https://storage.yandexcloud.net
     signing-region: ru-central1
     music-bucket-name: openfy-music-bucket
+
+select-limits:
+  artistsPerPage: 20
+  albumsPerPage: 20
+  tracksPerPage: 20

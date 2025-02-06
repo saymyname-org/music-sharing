@@ -1,5 +1,6 @@
-package ru.improve.openfy.api.dto.upload;
+package ru.improve.openfy.api.dto.track;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -17,8 +18,12 @@ public class UploadTrackRequest {
     private String trackName;
 
     @NotNull
-    @NotBlank
-    private String authorName;
+    @Min(1)
+    private Integer artistId;
+
+    @NotNull
+    @Min(1)
+    private Integer albumId;
 
     @NotNull
     @NotBlank

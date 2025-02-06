@@ -5,16 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import ru.improve.openfy.core.models.Track;
+import ru.improve.openfy.core.models.Album;
 
 import java.util.List;
 
 @Repository
-public interface TrackRepository extends
-        JpaRepository<Track, Long>,
-        PagingAndSortingRepository<Track, Long> {
+public interface AlbumRepository extends
+        JpaRepository<Album, Integer>,
+        PagingAndSortingRepository<Album, Integer> {
 
-    Page<Track> findAll(Pageable page);
+    Page<Album> findAll(Pageable page);
 
-    List<Track> findAllByNameContainingIgnoreCase(String name, Pageable page);
+    List<Album> findAllByNameContainingIgnoreCase(String name, Pageable page);
+
+    List<Album> findAllByArtist_Id(int artistId);
 }
