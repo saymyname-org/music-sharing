@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
-import ru.improve.openfy.core.configuration.storage.YandexStorageConfigData;
+import ru.improve.openfy.api.dto.track.UploadTrackRequest;
+import ru.improve.openfy.core.configuration.YandexStorageConfigData;
 import ru.improve.openfy.core.service.S3StorageService;
 import ru.improve.openfy.core.storage.S3StorageClientWrapper;
 import ru.improve.openfy.core.storage.S3StoragePresignerWrapper;
@@ -18,7 +18,6 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Map;
 
 import static ru.improve.openfy.core.storage.constants.HashRequestType.UNSIGNED_PAYLOAD;
 
@@ -36,16 +35,9 @@ public class S3StorageServiceImp implements S3StorageService {
         try (S3StorageClientWrapper s3StorageClientWrapper = new S3StorageClientWrapper(yandexStorageConfigData)) {
             S3Client s3Client = s3StorageClientWrapper.getS3Client();
 
-            Map<String, String> fileMetadata = Map.of(
-                    "trackName", uploadTrackRequest.getTrackName(),
-                    "authorName", uploadTrackRequest.getAuthorName(),
-                    "fileSize", String.valueOf(file.getSize())
-            );
-
             PutObjectRequest putRequest = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(fileHash)
-                    .metadata(fileMetadata)
                     .checksumSHA256(UNSIGNED_PAYLOAD)
                     .build();
 

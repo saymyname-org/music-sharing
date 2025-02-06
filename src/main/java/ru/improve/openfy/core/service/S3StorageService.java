@@ -1,6 +1,6 @@
 package ru.improve.openfy.core.service;
 
-import ru.improve.openfy.api.dto.upload.UploadTrackRequest;
+import ru.improve.openfy.api.dto.track.UploadTrackRequest;
 
 import java.io.IOException;
 

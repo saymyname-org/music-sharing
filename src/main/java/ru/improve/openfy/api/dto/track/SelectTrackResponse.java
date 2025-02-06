@@ -1,4 +1,4 @@
-package ru.improve.openfy.api.dto.searching;
+package ru.improve.openfy.api.dto.track;
 
 import lombok.Builder;
 import lombok.Data;
@@ -8,13 +8,15 @@ import ru.improve.openfy.core.track.enums.MusicFormat;
 @Data
 @Builder
 @Jacksonized
-public class SearchTrackResponse {
+public class SelectTrackResponse {
 
     private long id;
 
     private String name;
 
-    private String authorName;
+    private int artistId;
+
+    private int albumId;
 
     private MusicFormat format;
 
@@ -23,6 +25,4 @@ public class SearchTrackResponse {
     private String hash;
 
     private long uploaderId;
-
-    private String link;
 }

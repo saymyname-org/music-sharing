@@ -1,11 +1,11 @@
 package ru.improve.openfy.util;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.improve.openfy.api.error.ServiceException;
 
 import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_VALUE;
 
-@Component
+@UtilityClass
 public class EnumMapper {
 
     public static <T extends Enum<T>> T enumFromString(String key, Class<T> type, String message) {

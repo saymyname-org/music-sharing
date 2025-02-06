@@ -1,4 +1,4 @@
-package ru.improve.openfy.core.configuration.storage;
+package ru.improve.openfy.core.configuration;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
