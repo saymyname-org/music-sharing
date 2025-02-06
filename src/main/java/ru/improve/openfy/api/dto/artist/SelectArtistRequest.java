@@ -19,6 +19,6 @@ public class SelectArtistRequest {
     private int pageNumber;
 
     @NotNull
-    @Min(0)
+    @Min(1)
     private int itemsPerPage;
 }

@@ -36,7 +36,7 @@ public class AlbumController {
 
     @GetMapping(SELECT + ALL)
     public ResponseEntity<List<SelectAlbumResponse>> getAllAlbums(@RequestParam @Min(0) int page,
-                                                                  @RequestParam @Min(0) int itemsPerPage) {
+                                                                  @RequestParam @Min(1) int itemsPerPage) {
 
         List<SelectAlbumResponse> albums = albumService.getAllAlbumsWithParameters(page, itemsPerPage);
         return new ResponseEntity<>(albums, HttpStatus.OK);

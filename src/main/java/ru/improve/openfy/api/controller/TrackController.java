@@ -35,14 +35,16 @@ public class TrackController {
 
     @GetMapping(SELECT + ALL)
     public ResponseEntity<List<SelectTrackResponse>> findAllTracks(@RequestParam @Min(0) int page,
-                                                                   @RequestParam @Min(0) int itemsPerPage) {
+                                                                   @RequestParam @Min(1) int itemsPerPage) {
 
         List<SelectTrackResponse> tracks = trackService.getAllTracks(page, itemsPerPage);
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }
 
     @GetMapping(SELECT)
-    public ResponseEntity<List<SelectTrackResponse>> findTracksWithParameters(@Valid @RequestBody SelectTrackRequest selectTrackRequest) {
+    public ResponseEntity<List<SelectTrackResponse>> findTracksWithParameters(
+            @Valid @RequestBody SelectTrackRequest selectTrackRequest) {
+
         List<SelectTrackResponse> tracks = trackService.getTracksWithParameters(selectTrackRequest);
         return new ResponseEntity<>(tracks, HttpStatus.OK);
     }

@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
 import org.springframework.context.MessageSourceResolvable;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,6 +14,7 @@ import org.springframework.web.method.annotation.HandlerMethodValidationExceptio
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -107,6 +107,7 @@ public class ServiceExceptionHandler {
         );
 
         String fieldErrorsMessage = getErrorsStream(ex)
+                .filter(Objects::nonNull)
                 .collect(Collectors.joining(". "));
 
         messageBuilder.append(": ").append(fieldErrorsMessage);
@@ -115,12 +116,27 @@ public class ServiceExceptionHandler {
 
     private Stream<String> getErrorsStream(Exception ex) {
         if (ex instanceof MethodArgumentNotValidException e) {
-            return e.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage);
-        } else {
-            return ((HandlerMethodValidationException) ex).getAllErrors().stream()
-                    .map(MessageSourceResolvable::getDefaultMessage);
+            return e.getBindingResult().getFieldErrors().stream()
+                    .map(fieldError -> {
+                        String fieldName = fieldError.getField();
+                        String fieldErrorMsg = fieldError.getDefaultMessage();
+                        return fieldName + " " + fieldErrorMsg;
+                    });
         }
+
+        if (ex instanceof HandlerMethodValidationException e) {
+            return e.getAllValidationResults().stream()
+                    .filter(result -> result.getMethodParameter().getMethod() != null)
+                    .map(result -> {
+                        String parameterName = result.getMethodParameter().getParameterName();
+                        String fieldErrorsMsg = result.getResolvableErrors().stream()
+                                .map(MessageSourceResolvable::getDefaultMessage)
+                                .collect(Collectors.joining(", "));
+                        return parameterName + " " + fieldErrorsMsg;
+                    });
+        }
+
+        return null;
     }
 
     private ErrorCodeMessagePair resolveInternalServerErrorException(Exception ex) {

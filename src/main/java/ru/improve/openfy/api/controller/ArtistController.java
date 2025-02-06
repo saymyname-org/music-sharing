@@ -35,14 +35,16 @@ public class ArtistController {
 
     @GetMapping(SELECT + ALL)
     public ResponseEntity<List<SelectArtistResponse>> findAllArtists(@RequestParam @Min(0) int page,
-                                                                     @RequestParam @Min(0) int itemsPerPage) {
+                                                                     @RequestParam @Min(1) int itemsPerPage) {
 
         List<SelectArtistResponse> selectArtistResponseList = artistService.getAllArtist(page, itemsPerPage);
         return new ResponseEntity<>(selectArtistResponseList, HttpStatus.OK);
     }
 
     @GetMapping(SELECT)
-    public ResponseEntity<List<SelectArtistResponse>> findArtistsWithParameters(@Valid @RequestBody SelectArtistRequest selectArtistRequest) {
+    public ResponseEntity<List<SelectArtistResponse>> findArtistsWithParameters(
+            @Valid @RequestBody SelectArtistRequest selectArtistRequest) {
+
         List<SelectArtistResponse> selectArtistResponseList = artistService.getArtistWithParameters(selectArtistRequest);
         return new ResponseEntity<>(selectArtistResponseList, HttpStatus.OK);
     }

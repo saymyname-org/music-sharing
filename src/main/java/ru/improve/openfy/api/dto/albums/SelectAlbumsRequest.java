@@ -18,6 +18,6 @@ public class SelectAlbumsRequest {
     @Min(0)
     private int pageNumber;
 
-    @Min(0)
+    @Min(1)
     private int itemsPerPage;
 }
