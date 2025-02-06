@@ -16,6 +16,7 @@ import ru.improve.openfy.api.dto.track.DownloadTrackResponse;
 import ru.improve.openfy.api.dto.track.SelectTrackRequest;
 import ru.improve.openfy.api.dto.track.SelectTrackResponse;
 import ru.improve.openfy.api.dto.track.UploadTrackRequest;
+import ru.improve.openfy.api.dto.track.UploadTrackResponse;
 import ru.improve.openfy.core.service.TrackService;
 
 import java.util.List;
@@ -56,8 +57,8 @@ public class TrackController {
     }
 
     @PostMapping(UPLOAD)
-    public ResponseEntity<Void> uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest) {
-        trackService.uploadTrack(uploadTrackRequest);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<UploadTrackResponse> uploadTrack(@Valid @ModelAttribute UploadTrackRequest uploadTrackRequest) {
+        UploadTrackResponse uploadTrackResponse = trackService.uploadTrack(uploadTrackRequest);
+        return new ResponseEntity<>(uploadTrackResponse, HttpStatus.OK);
     }
 }

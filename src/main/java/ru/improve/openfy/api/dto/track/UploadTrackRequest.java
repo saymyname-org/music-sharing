@@ -19,11 +19,11 @@ public class UploadTrackRequest {
 
     @NotNull
     @Min(1)
-    private int artistId;
+    private Integer artistId;
 
     @NotNull
     @Min(1)
-    private int albumId;
+    private Integer albumId;
 
     @NotNull
     @NotBlank

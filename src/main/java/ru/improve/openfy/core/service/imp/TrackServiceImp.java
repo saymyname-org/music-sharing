@@ -34,6 +34,7 @@ import ru.improve.openfy.util.EnumMapper;
 import ru.improve.openfy.util.FileHashCalculator;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -100,7 +101,7 @@ public class TrackServiceImp implements TrackService {
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
 
         try {
-            String hashFile = FileHashCalculator.getHashFromFileInputString(
+            String fileHash = FileHashCalculator.getHashFromFileInputString(
                     uploadTrackRequest.getFile().getInputStream());
 
             MusicFormat musicFormat = EnumMapper.enumFromString(
@@ -115,18 +116,20 @@ public class TrackServiceImp implements TrackService {
                     .album(album)
                     .format(musicFormat)
                     .size(uploadTrackRequest.getFile().getSize())
-                    .hash(hashFile)
+                    .key(fileHash)
                     .uploaderId(principal.getId())
+                    .uploadDate(LocalDate.now())
                     .build();
 
             trackRepository.save(track);
 
-            s3StorageService.uploadTrackInStorage(uploadTrackRequest, hashFile, yandexStorageConfigData.getMusicBucketName());
+            s3StorageService.uploadTrackInStorage(uploadTrackRequest, fileHash, yandexStorageConfigData.getMusicBucketName());
             return UploadTrackResponse.builder()
                     .id(track.getId())
+                    .key(fileHash)
                     .build();
         } catch (DataIntegrityViolationException ex) {
-            throw new ServiceException(ALREADY_EXIST, "hash");
+            throw new ServiceException(ALREADY_EXIST, "key");
         } catch (IOException ex) {
             throw new ServiceException(INTERNAL_SERVER_ERROR, ex);
         }

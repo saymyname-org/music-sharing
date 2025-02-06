@@ -10,4 +10,6 @@ import lombok.extern.jackson.Jacksonized;
 public class UploadTrackResponse {
 
     private long id;
+
+    private String key;
 }

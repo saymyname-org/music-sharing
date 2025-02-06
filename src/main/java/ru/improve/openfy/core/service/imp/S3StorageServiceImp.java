@@ -18,7 +18,6 @@ import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignReques
 
 import java.io.IOException;
 import java.time.Duration;
-import java.util.Map;
 
 import static ru.improve.openfy.core.storage.constants.HashRequestType.UNSIGNED_PAYLOAD;
 
@@ -36,17 +35,9 @@ public class S3StorageServiceImp implements S3StorageService {
         try (S3StorageClientWrapper s3StorageClientWrapper = new S3StorageClientWrapper(yandexStorageConfigData)) {
             S3Client s3Client = s3StorageClientWrapper.getS3Client();
 
-            Map<String, String> fileMetadata = Map.of(
-                    "trackName", uploadTrackRequest.getTrackName(),
-                    "artistId", String.valueOf(uploadTrackRequest.getArtistId()),
-                    "albumId", String.valueOf(uploadTrackRequest.getAlbumId()),
-                    "fileSize", String.valueOf(file.getSize())
-            );
-
             PutObjectRequest putRequest = PutObjectRequest.builder()
                     .bucket(bucket)
                     .key(fileHash)
-                    .metadata(fileMetadata)
                     .checksumSHA256(UNSIGNED_PAYLOAD)
                     .build();
 

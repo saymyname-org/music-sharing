@@ -39,6 +39,9 @@ public class Artist {
     @Column(name = "cover_url")
     private String coverUrl;
 
+    @Column(name = "uploader")
+    private long uploaderId;
+
     @Column(name = "upload_date")
     private LocalDate uploadDate;
 }

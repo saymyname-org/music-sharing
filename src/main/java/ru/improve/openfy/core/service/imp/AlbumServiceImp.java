@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.improve.openfy.api.dto.albums.CreateAlbumRequest;
@@ -18,10 +20,12 @@ import ru.improve.openfy.core.configuration.EntitySelectLimits;
 import ru.improve.openfy.core.mappers.AlbumMapper;
 import ru.improve.openfy.core.models.Album;
 import ru.improve.openfy.core.models.Artist;
+import ru.improve.openfy.core.security.UserPrincipal;
 import ru.improve.openfy.core.service.AlbumService;
 import ru.improve.openfy.repositories.AlbumRepository;
 import ru.improve.openfy.repositories.ArtistRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -92,6 +96,9 @@ public class AlbumServiceImp implements AlbumService {
     @Transactional
     @Override
     public CreateAlbumResponse createAlbum(CreateAlbumRequest createAlbumRequest) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+
         Artist artist = artistRepository.findById(createAlbumRequest.getArtistId())
                 .orElseThrow(() -> new ServiceException(NOT_FOUND));
 
@@ -99,6 +106,8 @@ public class AlbumServiceImp implements AlbumService {
                 .name(createAlbumRequest.getName())
                 .artist(artist)
                 .coverUrl(null)
+                .uploaderId(principal.getId())
+                .uploadDate(LocalDate.now())
                 .build();
 
         try {

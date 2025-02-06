@@ -17,6 +17,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.improve.openfy.core.track.enums.MusicFormat;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "tracks")
 @Data
@@ -45,7 +47,10 @@ public class Track {
 
     private long size;
 
-    private String hash;
+    private String key;
+
+    @Column(name = "upload_date")
+    private LocalDate uploadDate;
 
     @Column(name = "uploader")
     private long uploaderId;

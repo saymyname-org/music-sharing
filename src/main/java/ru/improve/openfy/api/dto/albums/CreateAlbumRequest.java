@@ -19,7 +19,7 @@ public class CreateAlbumRequest {
 
     @NotNull
     @Min(1)
-    private int artistId;
+    private Integer artistId;
 
     private MultipartFile cover;
 }

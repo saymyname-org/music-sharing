@@ -44,4 +44,7 @@ public class Album {
 
     @Column(name = "upload_date")
     private LocalDate uploadDate;
+
+    @Column(name = "uploader")
+    private long uploaderId;
 }

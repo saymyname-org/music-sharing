@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.improve.openfy.api.dto.artist.CreateArtistRequest;
@@ -17,6 +19,7 @@ import ru.improve.openfy.api.error.ServiceException;
 import ru.improve.openfy.core.configuration.EntitySelectLimits;
 import ru.improve.openfy.core.mappers.ArtistMapper;
 import ru.improve.openfy.core.models.Artist;
+import ru.improve.openfy.core.security.UserPrincipal;
 import ru.improve.openfy.core.service.ArtistService;
 import ru.improve.openfy.repositories.ArtistRepository;
 
@@ -80,8 +83,15 @@ public class ArtistServiceImp implements ArtistService {
     @Transactional
     @Override
     public CreateArtistResponse createArtist(CreateArtistRequest createArtistRequest) {
-        Artist artist = artistMapper.toArtist(createArtistRequest);
-        artist.setUploadDate(LocalDate.now());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+
+        Artist artist = Artist.builder()
+                .name(createArtistRequest.getName())
+                .coverUrl(null)
+                .uploadDate(LocalDate.now())
+                .uploaderId(principal.getId())
+                .build();
 
         try {
             artistRepository.save(artist);
