@@ -25,7 +25,8 @@ public class AuthProvider implements AuthenticationProvider {
             throw new ServiceException(ErrorCode.UNAUTHORIZED);
         }
 
-        UserPrincipal userPrincipal = Mapper.createUserPrincipalFromAuthData(checkUserResponse.getUserId(),
+        UserPrincipal userPrincipal = Mapper.createUserPrincipalFromAuthData(
+                checkUserResponse.getUserId(),
                 checkUserResponse.getRolesList());
         return new AuthToken(userPrincipal, token);
     }

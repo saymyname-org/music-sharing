@@ -1,17 +1,22 @@
 package ru.improve.openfy.api.error;
 
+import com.google.common.collect.Maps;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.data.util.Pair;
+import org.springframework.context.MessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 
-import java.util.EnumMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static ru.improve.openfy.api.error.ErrorCode.ALREADY_EXIST;
 import static ru.improve.openfy.api.error.ErrorCode.ILLEGAL_DTO_VALUE;
@@ -33,88 +38,132 @@ import static ru.improve.openfy.util.MessageKeys.TITLE_USER_NOT_FOUND;
 @RestControllerAdvice
 public class ServiceExceptionHandler {
 
-    private static EnumMap<ErrorCode, Pair<String, HttpStatus>> ERRORS_MAP;
+    private static final Map<ErrorCode, String> MESSAGE_KEYS_MAP = Maps.immutableEnumMap(
+            Map.of(
+                    ILLEGAL_VALUE, TITLE_ILLEGAL_VALUE,
+                    ILLEGAL_DTO_VALUE, TITLE_ILLEGAL_DTO_VALUE,
+                    ALREADY_EXIST, TITLE_ENTITY_ALREADY_EXIST,
+                    NOT_FOUND, TITLE_USER_NOT_FOUND,
+                    UNAUTHORIZED, INVALID_AUTHORIZATION,
+                    SESSION_IS_OVER, SESSION_DISABLE,
+                    INTERNAL_SERVER_ERROR, TITLE_INTERNAL_SERVER_ERROR
+            )
+    );
+
+    private static final Map<ErrorCode, HttpStatus> HTTP_STATUS_MAP = Maps.immutableEnumMap(
+            Map.of(
+                    ILLEGAL_VALUE, HttpStatus.BAD_REQUEST,
+                    ILLEGAL_DTO_VALUE, HttpStatus.BAD_REQUEST,
+                    ALREADY_EXIST, HttpStatus.BAD_REQUEST,
+                    NOT_FOUND, HttpStatus.NOT_FOUND,
+                    UNAUTHORIZED, HttpStatus.UNAUTHORIZED,
+                    SESSION_IS_OVER, HttpStatus.UNAUTHORIZED,
+                    INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR
+            )
+    );
 
     private final MessageSource messageSource;
 
-    static {
-        ERRORS_MAP = new EnumMap<>(ErrorCode.class);
-        ERRORS_MAP.putAll(Map.of(
-                ILLEGAL_VALUE, Pair.of(TITLE_ILLEGAL_VALUE, HttpStatus.BAD_REQUEST),
-                ILLEGAL_DTO_VALUE, Pair.of(TITLE_ILLEGAL_DTO_VALUE, HttpStatus.BAD_REQUEST),
-                ALREADY_EXIST, Pair.of(TITLE_ENTITY_ALREADY_EXIST, HttpStatus.BAD_REQUEST),
-                NOT_FOUND, Pair.of(TITLE_USER_NOT_FOUND, HttpStatus.NOT_FOUND),
-                UNAUTHORIZED, Pair.of(INVALID_AUTHORIZATION, HttpStatus.UNAUTHORIZED),
-                SESSION_IS_OVER, Pair.of(SESSION_DISABLE, HttpStatus.UNAUTHORIZED),
-                INTERNAL_SERVER_ERROR, Pair.of(TITLE_INTERNAL_SERVER_ERROR, HttpStatus.INTERNAL_SERVER_ERROR)
-        ));
-    }
-
     @ExceptionHandler
     public ResponseEntity<ErrorResponseBody> handleException(Exception ex) {
-        Pair<ErrorCode, String> resolvedException = resolveException(ex);
-        ErrorCode errorCode = resolvedException.getFirst();
+        ErrorCodeMessagePair resolvedException = resolveException(ex);
 
-        return ResponseEntity.status(ERRORS_MAP.get(errorCode).getSecond())
+        ErrorCode errorCode = resolvedException.errorCode;
+        return ResponseEntity.status(HTTP_STATUS_MAP.get(errorCode))
                 .body(ErrorResponseBody.builder()
                         .code(errorCode.getCode())
-                        .message(resolvedException.getSecond())
+                        .message(resolvedException.message)
                         .build());
     }
 
-    private Pair<ErrorCode, String> resolveException(Exception ex) {
-        Pair<ErrorCode, String> resolvedException;
-         if (ex instanceof ServiceException) {
-            resolvedException = resolveOpenfyException((ServiceException) ex);
-        } else {
-            resolvedException = resolveServerErrorException(ex);
+    private ErrorCodeMessagePair resolveException(Exception ex) {
+        ErrorCodeMessagePair resolvedException;
+         if (ex instanceof ServiceException e) {
+            resolvedException = resolveServiceException(e);
+        } else if (ex instanceof MethodArgumentNotValidException ||
+                   ex instanceof HandlerMethodValidationException) {
+             resolvedException = resolveControllerDtoValidatorException(ex);
+         } else {
+            resolvedException = resolveInternalServerErrorException(ex);
         }
         return resolvedException;
     }
 
-    private Pair<ErrorCode, String> resolveOpenfyException(ServiceException ex) {
-        Pair<String, HttpStatus> errorPair = ERRORS_MAP.get(ex.getCode());
-        StringBuilder messageBuild = new StringBuilder(buildMessage(errorPair.getFirst(), ex.getParams()));
+    private ErrorCodeMessagePair resolveServiceException(ServiceException ex) {
+        ErrorCode errorCode = ex.getCode();
+        StringBuilder message = new StringBuilder(buildMessage(MESSAGE_KEYS_MAP.get(errorCode), ex.getParams()));
         if (ex.getMessage() != null) {
-            messageBuild.append(" " + ex.getMessage());
+            message.append(": " + buildMessage(ex.getMessage(), ex.getParams()));
         }
-        messageBuild.append(buildMessageFromOpenfyExceptions(ex));
-        return Pair.of(ex.getCode(), messageBuild.toString());
+        message.append(createMessageFromThrowable(ex.getCause()));
+
+        return ErrorCodeMessagePair.of(errorCode, message.toString());
     }
 
-    private Pair<ErrorCode, String> resolveServerErrorException(Exception ex) {
-        Pair<String, HttpStatus> errorPair = ERRORS_MAP.get(INTERNAL_SERVER_ERROR);
-        StringBuilder messageBuild  = new StringBuilder(buildMessage(errorPair.getFirst(), null));
-        if (ex.getMessage() != null) {
-            messageBuild.append(": " + ex.getMessage());
-        }
-        return Pair.of(INTERNAL_SERVER_ERROR, messageBuild.toString());
-    }
-
-    private String buildMessageFromOpenfyExceptions(ServiceException ex) {
-        int messageCount = 0;
-        Throwable causeException = ex.getCause();
-        StringBuilder messageBuilder = new StringBuilder();
-        while (causeException != null) {
-            if (causeException.getMessage() != null) {
-                if (messageCount == 0) {
-                    messageBuilder.append(": ");
-                }
-                messageBuilder
-                        .append(buildMessage(causeException.getMessage(), ex.getParams()))
-                        .append(" ");
-            }
-            causeException = causeException.getCause();
-        }
-        return messageBuilder.toString().strip();
-    }
-
-    private String buildMessage(String key, String[] params) {
-        return messageSource.getMessage(
-                key,
-                params,
-                key,
-                LocaleContextHolder.getLocale()
+    private ErrorCodeMessagePair resolveControllerDtoValidatorException(Exception ex) {
+        ErrorCode errorCode = ILLEGAL_DTO_VALUE;
+        StringBuilder messageBuilder = new StringBuilder(
+                buildMessage(MESSAGE_KEYS_MAP.get(errorCode), null)
         );
+
+        String fieldErrorsMessage = getErrorsStream(ex)
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining(". "));
+
+        messageBuilder.append(": ").append(fieldErrorsMessage);
+        return ErrorCodeMessagePair.of(errorCode, messageBuilder.toString());
+    }
+
+    private Stream<String> getErrorsStream(Exception ex) {
+        if (ex instanceof MethodArgumentNotValidException e) {
+            return e.getBindingResult().getFieldErrors().stream()
+                    .map(fieldError -> {
+                        String fieldName = fieldError.getField();
+                        String fieldErrorMsg = fieldError.getDefaultMessage();
+                        return fieldName + " " + fieldErrorMsg;
+                    });
+        }
+
+        if (ex instanceof HandlerMethodValidationException e) {
+            return e.getAllValidationResults().stream()
+                    .filter(result -> result.getMethodParameter().getMethod() != null)
+                    .map(result -> {
+                        String parameterName = result.getMethodParameter().getParameterName();
+                        String fieldErrorsMsg = result.getResolvableErrors().stream()
+                                .map(MessageSourceResolvable::getDefaultMessage)
+                                .collect(Collectors.joining(", "));
+                        return parameterName + " " + fieldErrorsMsg;
+                    });
+        }
+
+        return null;
+    }
+
+    private ErrorCodeMessagePair resolveInternalServerErrorException(Exception ex) {
+        return ErrorCodeMessagePair.of(INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
+
+    private String createMessageFromThrowable(Throwable throwable) {
+        StringBuilder message = new StringBuilder();
+        if (throwable != null) {
+            message.append(": ").append(throwable.getMessage());
+        }
+        return message.toString();
+    }
+
+    private String buildMessage(String messageKey, String[] params) {
+        return messageSource.getMessage(
+                messageKey,
+                params,
+                messageKey,
+                Locale.ENGLISH
+        );
+    }
+
+    private record ErrorCodeMessagePair(ErrorCode errorCode, String message) {
+
+        public static ErrorCodeMessagePair of(ErrorCode errorCode, String message) {
+            return new ErrorCodeMessagePair(errorCode, message);
+        }
     }
 }

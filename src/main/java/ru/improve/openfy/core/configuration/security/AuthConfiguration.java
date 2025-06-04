@@ -1,4 +1,4 @@
-package ru.improve.openfy.core.configuration;
+package ru.improve.openfy.core.configuration.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +16,7 @@ import ru.improve.openfy.core.security.CustomAuthorizationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
-public class AuthConfig {
+public class AuthConfiguration {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -33,7 +33,6 @@ public class AuthConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         auth -> auth
-//                                .requestMatchers(HttpMethod.GET, SEARCH, ARTISTS + SELECT).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(new AuthFilter(authService), AuthorizationFilter.class)
